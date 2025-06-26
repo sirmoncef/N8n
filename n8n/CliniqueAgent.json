@@ -1,0 +1,2107 @@
+{
+  "name": "Workflow zekri",
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "cafa255e-100d-435d-b43c-3b6577814de7",
+                    "leftValue": "={{ $json.message.voice }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ec80ef79-16bc-43ea-a358-1da422cd29a8",
+                    "leftValue": "={{ $json.message.photo[0] }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "c313016c-b37a-43d0-9c44-58b55958ba8a"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -220,
+        160
+      ],
+      "id": "98e75151-300e-4c37-90ad-bc90a408eb07",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=You are an assistant for Noor Company. When the conversation starts (e.g. first message or trigger), send:\n\n🌟 أهلاً وسهلاً بكم في عيادة Zekri dental 🌟  \n> or  \n🌟 Welcome to Zekri Dental Company 🌟\n\nFor all following messages, skip the welcome and just respond normally based on this information\n\n---\n\n### 🦷 Doctor Profile:\n\n🦷 معلومات العيادة:\nالطبيب: د. زكري  \nالتخصص: طبيب أسنان  \nاسم العيادة: Cabinet Zekri Dentaire  \nالعنوان: البليدة، أولاد يعيش    \nساعات العمل: من 08:00 صباحاً إلى 16:00 مساءً (من الأحد إلى الخميس)  \nالاستشارة: مجاناً\n\n🦷 الخدمات المتوفرة:\n- قلع الأسنان الغير صالحة: ابتداءً من 1500 دج حسب الصعوبة  \n- علاج اللثة وإزالة الترسّبات الكلسية: ابتداءً من 3000 دج حسب الصعوبة  \n- جراحة اللثة: ابتداءً من 5000 دج حسب الصعوبة  \n- حشو الأسنان: ابتداءً من 5000 دج حسب الصعوبة  \n- علاج عصب الأسنان المستعملة للتركيب: 5000 دج للعصب الواحد (تُحسب حسب عدد الأعصاب 1-2-3)  \n- تبييض الأسنان: 20,000 دج للحصة الواحدة (قد يتطلب الأمر حصتين أو أكثر)  \n- زراعة الأسنان: 100,000 دج للزرعة الواحدة (الدفع على دفعتين - يوم المراجعة بعد 3 أشهر)  \n- التركيبات:  \n  • الجودة المتوسطة (سيراميك): 25,000 دج  \n  • الجودة العالية (زيركون): 41,000 دج  \n  • الدفع على دفعتين  \n  • يوم برد الأسنان وأخذ البصمة، ويوم التركيب\n\n📍 موقع العيادة على Google Maps:  \nhttps://maps.app.goo.gl/6nnpcP9kfJSWZv6G9\n\n---\n\nإذا كتب المستخدم أي عبارة تدل على رغبته في حجز موعد، مثل:  \n\"أريد حجز موعد\"  \n\"أرغب في الحجز\"  \n\"أريد موعد\"  \n\"ممكن أحجز\"  \n\"أريد تحديد موعد\"  \n\"حجز\"  \n✅ يجب الرد مباشرة وفقط بالرسالة التالية دون أي سؤال أو حوار: مع نفس المثال\n\n🗓️ لحجز موعد، أرسل البيانات بالتنسيق التالي:  \n🔹 التوقيت:  13 جوان 2025 على 10  \n🔹 الاسم: محمد أمين  \n🔹 رقم الهاتف: 055555555  \n🔹 الوصف: تقويم اسنان\n\n---\n\nعندما يرسل المستخدم رسالة تحتوي على نية الإلغاء مثل:  \n\"أريد إلغاء الموعد\" أو \"أريد الغاء\" أو \"أريد إلغاء زيارتي\"...  \nيجب أن ترد دائمًا برسالة الإلغاء التالية فقط وبدون أسئلة أو طلبات أخرى: مع نفس المثال\n\n❌ لإلغاء موعد، أرسل البيانات بالتنسيق التالي:  \n🔹 رقم الحجز الملغى: 45678  \nلا تطلب تأكيد ولا تسأل أي سؤال، فقط أرسل هذا الرد مباشرة\n\n---\n\nإذا كتب المستخدم أي عبارة تدل على تعديل أو تحديث الموعد أو سأل كيف، مثل:  \n\"أريد تغيير الموعد\"  \n\"أريد تعديل الموعد\"  \n\"أريد تحديث موعدي\"  \n\"أغير التوقيت\"  \n✅ يجب الرد مباشرة بالرسالة التالية فقط: مع نفس المثال\n\n🔁 لتحديث موعد، أرسل البيانات بالتنسيق التالي:  \n🔹 رقم الحجز: 48207  \n🔹 الاسم: طالب  \n🔹 رقم الهاتف: 055599956  \n🔹 التوقيت الجديد: 16 جوان 2025 على 10:50  \n🔹 الوصف: مرتبط باجتماع\n\n---\n\n📅 إذا كنت تريد معرفة المواعيد المتاحة، فقط أرسل:  \nالمواعيد المتاحة\n\n⏰ إذا كنت تريد معرفة أوقات العمل:  \n✅ المواعيد متاحة من الأحد إلى الخميس  \n🕗 من الساعة 08:00 صباحاً إلى الساعة 16:00 مساءً\n\n---\n\n### 📌 ملاحظات مهمة:\n\nلا تطلب توضيح  \nلا تستخدم أي صياغة غير هذه  \nلا تغير ترتيب أو تنسيق الحقول  \nاستخدم دائمًا لغة المستخدم (عربية أو فرنسية أو انجليزية)  \nلا تكرر الرسائل الترحيبية بعد أول رسالة في الجلسة\n\n\"{{  $json.text   }}\"\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        660,
+        60
+      ],
+      "id": "4fe80694-e7a5-4d99-8946-3454f310badd",
+      "name": "AI Agent",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $input.first().json.text.trim();\nconst lowerText = text.toLowerCase();\n\n\nconst showKeywords = ['متى أستطيع الحجز', 'أوقات متاحة', 'المواعيد المتاحة', 'التوفر'];\n\nlet intent = 'chat';\n\nif (\n  lowerText.includes('رقم الحجز') &&\n  lowerText.includes('التوقيت الجديد') &&\n  lowerText.includes('الاسم') &&\n  lowerText.includes('رقم الهاتف')\n) {\n  intent = 'update_event';\n} else if (\n  lowerText.includes('رقم الحجز الملغى')\n) {\n  intent = 'cancel_event';\n} else if (\n  lowerText.includes('التوقيت') &&\n  lowerText.includes('الاسم') &&\n  lowerText.includes('رقم الهاتف')\n) {\n  intent = 'create_event';\n} else if (showKeywords.some(keyword => lowerText.includes(keyword))) {\n  intent = 'show_meetings';\n} else {\n  intent = 'create_prompt';\n}\n\nreturn [{ json: { intent, text } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        780
+      ],
+      "id": "237314fd-5c36-4161-b766-8f3418291f6d",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "animeweeabo0xr@gmail.com",
+          "mode": "list",
+          "cachedResultName": "animeweeabo0xr@gmail.com"
+        },
+        "start": "={{ $('Prepare Time').first().json.start }}",
+        "end": "={{ $('Prepare Time').first().json.end }}",
+        "additionalFields": {
+          "description": "={{ $('Prepare Time').first().json.description }}",
+          "id": "={{ $('Prepare Time').first().json.id }}",
+          "location": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+          "summary": "={{ $('Prepare Time').first().json.summary }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1920,
+        900
+      ],
+      "id": "ac5be8e3-af31-477e-94d7-96e5da427917",
+      "name": "Create Event",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "6T0yU8tMSVF78m14",
+          "name": "Google Calendar account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ===== Get Input Data Safely =====\nconst items = $input.all(); // Will be [] if no events\n\n// ===== Main Processing Code =====\nconst allDays = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'السبت'];\nconst today = new Date();\nconst todayIndex = today.getDay(); // Sunday = 0, ..., Saturday = 6\n\n\nconst dayMap = {\n  0: 'الأحد',\n  1: 'الاثنين',\n  2: 'الثلاثاء',\n  3: 'الأربعاء',\n  4: 'الخميس',\n  5: 'الجمعة',   \n  6: 'السبت'\n};\n\nlet days = [];\nlet baseDate = new Date();\n\nif (todayIndex === 5) {\n \n  baseDate.setDate(today.getDate() + 1);\n  days = ['السبت'];\n} else if (todayIndex === 6) {\n  days = ['السبت'];\n} else {\n\n  for (let i = todayIndex; i <= 6; i++) {\n    const dayName = dayMap[i];\n    if (dayName !== 'الجمعة') {\n      days.push(dayName);\n    }\n  }\n}\n\nconst output = {};\ndays.forEach(day => output[day] = []);\n\n// تحويل وقت إلى دقائق حسب توقيت الجزائر (UTC+1)\nconst timeToAlgerianMinutes = (dateTime) => {\n  const date = new Date(dateTime);\n  const algerianOffset = 60;\n  return date.getUTCHours() * 60 + date.getUTCMinutes() + algerianOffset;\n};\n\n\ndays.forEach((dayName, index) => {\n  const actualDayIndex = allDays.indexOf(dayName);\n\n  const dayEvents = items\n    .filter(item => {\n      if (\n        !item.json ||\n        !item.json.start || !item.json.end ||\n        (!item.json.start.dateTime && !item.json.start.date)\n      ) return false;\n\n      const startRaw = item.json.start.dateTime || item.json.start.date;\n      const start = new Date(startRaw);\n      return start.getUTCDay() === actualDayIndex;\n    })\n    .map(item => {\n      const startRaw = item.json.start.dateTime || item.json.start.date;\n      const endRaw = item.json.end.dateTime || item.json.end.date;\n      const start = new Date(startRaw);\n      const end = new Date(endRaw);\n      return {\n        start: timeToAlgerianMinutes(start),\n        end: timeToAlgerianMinutes(end)\n      };\n    })\n    .sort((a, b) => a.start - b.start);\n\n  const workDayStart = 8 * 60;\n  const workDayEnd = 16 * 60;\n  let lastEnd = workDayStart;\n\n  if (dayEvents.length > 0) {\n    dayEvents.forEach(event => {\n      if (event.start > lastEnd) {\n        const availableStart = lastEnd;\n        const availableEnd = Math.min(event.start, workDayEnd);\n        if (availableStart < availableEnd) {\n          output[dayName].push(formatTimeSlot(availableStart, availableEnd));\n        }\n      }\n\n      lastEnd = Math.max(lastEnd, event.end);\n      if (lastEnd > workDayEnd) {\n        lastEnd = workDayEnd;\n      }\n    });\n\n    if (lastEnd < workDayEnd) {\n      output[dayName].push(formatTimeSlot(lastEnd, workDayEnd));\n    }\n  } else {\n    output[dayName].push(\"متاح من 08:00 إلى 16:00\");\n  }\n});\n\n\nfunction formatTimeSlot(startMinutes, endMinutes) {\n  const startHours = Math.floor(startMinutes / 60);\n  const startMins = startMinutes % 60;\n  const endHours = Math.floor(endMinutes / 60);\n  const endMins = endMinutes % 60;\n\n  const startStr = `${String(startHours).padStart(2, '0')}:${String(startMins).padStart(2, '0')}`;\n  const endStr = `${String(endHours).padStart(2, '0')}:${String(endMins).padStart(2, '0')}`;\n  return `متاح من ${startStr} إلى ${endStr}`;\n}\n\n\nfunction formatArabicDate(dateObj) {\n  const day = dateObj.getDate();\n  const monthNames = ['جانفي', 'فيفري', 'مارس', 'أفريل', 'ماي', 'جوان', 'جويلية', 'أوت', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];\n  const month = monthNames[dateObj.getMonth()];\n  return `${day} ${month}`;\n}\n\n// ===== Format WhatsApp Message =====\nlet whatsappMessage = '📆 المواعيد المتاحة لهذا الأسبوع:\\n\\n';\nlet currentDate = new Date(baseDate);\n\nfor (const day of days) {\n  const formattedDate = formatArabicDate(currentDate);\n  whatsappMessage += `📅 ${day} ${formattedDate}:\\n`;\n\n  const slots = output[day];\n  if (!slots || slots.length === 0) {\n    whatsappMessage += '  - لا يوجد وقت متاح\\n';\n  } else {\n    slots.forEach(slot => {\n      whatsappMessage += `  - ${slot}\\n`;\n    });\n  }\n\n  whatsappMessage += '\\n';\n  currentDate.setDate(currentDate.getDate() + 1);\n}\n\nreturn [{ json: { message: whatsappMessage } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        460
+      ],
+      "id": "1d96e5be-1383-49cd-be12-9d07dd4c3f36",
+      "name": "Group Events by Day"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "animeweeabo0xr@gmail.com",
+          "mode": "list",
+          "cachedResultName": "animeweeabo0xr@gmail.com"
+        },
+        "returnAll": true,
+        "timeMax": "={{ $now.plus(1,'week')}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        740,
+        460
+      ],
+      "id": "e15c5f7b-0f60-43a5-aad4-5dac4b8eca1b",
+      "name": "Get All Events",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "6T0yU8tMSVF78m14",
+          "name": "Google Calendar account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $json.text;\n\nfunction normalizeArabicNumbers(str) {\n  const arabicToEnglishMap = {\n    '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',\n    '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9',\n  };\n  return str.replace(/[٠-٩]/g, d => arabicToEnglishMap[d]);\n}\n\nfunction generateRandomId() {\n  return Math.floor(10000 + Math.random() * 90000).toString();\n}\n\nconst normalizedText = normalizeArabicNumbers(text);\nconst lines = normalizedText.split('\\n').map(line => line.trim());\nconst parsed = {};\n\nfor (const line of lines) {\n  const [key, ...rest] = line.split(':');\n  if (key && rest.length) {\n    parsed[key.trim().toLowerCase()] = rest.join(':').trim();\n  }\n}\n\nconst rawStart = parsed[\"التوقيت\"];\nconst name = parsed[\"الاسم\"];\nconst phone = parsed[\"رقم الهاتف\"];\nconst description = parsed[\"الوصف\"] || \"\";\n\nif (!rawStart || !name || !phone) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ يرجى استخدام التنسيق التالي:\\n13 جوان 2025 على 10\\nأو\\n13 جوان على 11:45\"\n    }\n  }];\n}\n\n\nconst months = {\n  'جانفي': '01', 'فيفري': '02', 'مارس': '03', 'أفريل': '04', 'ماي': '05',\n  'جوان': '06', 'جويلية': '07', 'أوت': '08', 'سبتمبر': '09',\n  'أكتوبر': '10', 'نوفمبر': '11', 'ديسمبر': '12'\n};\n\nconst dateMatch = rawStart.match(/(\\d{1,2})\\s+([^\\s]+)(?:\\s+(\\d{4}))?\\s+على\\s+(\\d{1,2})(?::(\\d{1,2}))?/);\nif (!dateMatch) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ تنسيق التوقيت غير صحيح. استخدم مثلًا: 13 جوان 2025 على 10 أو 13 جوان على 11:45\"\n    }\n  }];\n}\n\nlet [, dayStr, monthName, yearStr, hourStr, minuteStr] = dateMatch;\n\nconst day = parseInt(dayStr);\nconst month = months[monthName];\nconst year = yearStr ? parseInt(yearStr) : new Date().getFullYear();\nconst hour = parseInt(hourStr);\nconst minute = minuteStr ? parseInt(minuteStr) : 0;\n\nif (!month || hour < 0 || hour > 23 || minute < 0 || minute > 59) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ خطأ في قراءة التوقيت أو الشهر. تأكد من أن الشهر مكتوب بالعربية مثل: جوان\"\n    }\n  }];\n}\n\n// التأكد من ساعات العمل\nif (hour < 8 || hour >= 16) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ وقت الحجز خارج أوقات العمل. الرجاء اختيار وقت بين 08:00 و 16:00.\"\n    }\n  }];\n}\n\nconst startDate = new Date(Date.UTC(year, parseInt(month) - 1, day, hour - 1, minute, 0));\nconst dayOfWeek = startDate.getUTCDay();\nif (dayOfWeek === 5 ) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ لا يمكن الحجز في عطلة نهاية الأسبوع (الجمعة).\"\n    }\n  }];\n}\n\n\nconst existingBookings = []; \n\nconst requestedStart = startDate.getTime();\nconst requestedEnd = requestedStart + 60 * 60 * 1000;\n\nconst conflict = existingBookings.some(event => {\n  const eventStart = new Date(event.start).getTime();\n  const eventEnd = new Date(event.end).getTime();\n  return (requestedStart < eventEnd) && (requestedEnd > eventStart);\n});\n\nif (conflict) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ هذا الموعد محجوز مسبقًا. يرجى اختيار وقت آخر.\"\n    }\n  }];\n}\n\n\nconst formatWithTimezone = (dateObj) => dateObj.toISOString().replace('Z', '+00:00');\nconst start = formatWithTimezone(startDate);\nconst end = formatWithTimezone(new Date(startDate.getTime() + 60 * 60 * 1000));\nconst id = generateRandomId();\n\nreturn [{\n  json: {\n    id,\n    start,\n    end,\n    summary: name,\n    description: description,\n    phonenumber: phone,\n    error: false,\n    message: `✅ تم تسجيل الحجز بنجاح. رقم الحجز الخاص بك هو: ${id}`\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        740,
+        860
+      ],
+      "id": "dcab568f-1708-4c79-a144-cc1d1ace2c67",
+      "name": "Prepare Time"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "create_prompt",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "e6e80b99-e712-418b-83b3-550061e6b783"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "create_prompt"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a7304345-946e-4ddd-95b0-ecaa84a6ea6b",
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "show_meetings",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "show_meetings"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4eee5964-3e15-4317-b5a4-35ebf1736edc",
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "create_event",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "create_event"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8e9dfcee-71a2-4d21-989c-b08ce1148e05",
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "update_event",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "update_event"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a35797e2-a85b-4fb8-8790-080096b77f6a",
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "cancel_event",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "cancel_event"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        440,
+        740
+      ],
+      "id": "fcde9ec0-6b0a-4112-aef0-7c7b86c0ea70",
+      "name": "service type"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "07581097-cc36-4f68-b923-88c69bf4847e",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        780
+      ],
+      "id": "41aeceb6-0d8e-43d9-8260-f19823a7018e",
+      "name": "Text Prompt"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3dc4b565-1833-4f88-bb3d-16a0713a6563",
+              "name": "text",
+              "value": "{{  $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        0
+      ],
+      "id": "827b16b8-11f0-44b7-8666-b6fe1d7e4715",
+      "name": "Audio Prompt"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ca34f8ea-efe2-4974-9ffe-736e3ddcf11b",
+              "name": "text",
+              "value": "=The user provided the following picture and text \n\nimage description :\n {{ $json.content }}\nuser message : \n{{ $('WhatsApp Trigger').item.json.messages[0].image.caption || \"Describe this image in 2 lines\" }}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        200
+      ],
+      "id": "e81f262e-a7ff-4bd6-b10c-814b96463892",
+      "name": "Image Prompt"
+    },
+    {
+      "parameters": {
+        "jsCode": "const event = $json;\n\nconst summary = event.summary || \"بدون عنوان\";\nconst description = event.description || \"لا يوجد تفاصيل\";\nconst bookingId = event.id || \"غير متوفر\";\n\n// Parse times\nconst start = new Date(event.start.dateTime);\nconst end = new Date(event.end.dateTime);\nstart.setHours(start.getHours() + 1);\nend.setHours(end.getHours() + 1);\n\n// Format\nconst date = start.toLocaleDateString('en-UC');\nconst startTime = start.toLocaleTimeString('en-UC', { hour: '2-digit', minute: '2-digit' });\nconst endTime = end.toLocaleTimeString('en-UC', { hour: '2-digit', minute: '2-digit' });\n\nconst message = `📌 *تم حجز موعد جديد!*\n\n🆔 *رقم الحجز:* ${bookingId}\n👤 *العميل:* ${summary}\n📞 *التفاصيل:* ${description}\n📅 *التاريخ:* ${date}\n🕒 *الوقت:* ${startTime} - ${endTime}\n\n⚠️ *لا تشارك رقم الحجز مع أي شخص.* يتم استخدامه فقط في حالة الإلغاء أو التعديل.`;\n\nreturn [{ json: { message } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2140,
+        1000
+      ],
+      "id": "d8858a1e-5986-4e1d-b555-334ba71763f5",
+      "name": "Format Message When Event Created"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -440,
+        1960
+      ],
+      "id": "ea0f3e23-a541-4037-96e7-f14060a59759",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "animeweeabo0xr@gmail.com",
+          "mode": "list",
+          "cachedResultName": "animeweeabo0xr@gmail.com"
+        },
+        "returnAll": true,
+        "timeMin": "={{ $now.minus({ days: 2 }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -220,
+        1960
+      ],
+      "id": "ac11421a-dd4b-40c8-9dee-1c7a76d93a01",
+      "name": "Get All Events for For reminders",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "6T0yU8tMSVF78m14",
+          "name": "Google Calendar account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\nnow.setMinutes(0, 0, 0); \n\nconst matchesBefore = [];\nconst matchesAfter = [];\n\nfor (const item of $input.all()) {\n  const event = item.json;\n  const eventDate = new Date(event.start.dateTime);\n  eventDate.setMinutes(0, 0, 0); \n\n  const timeDiffMs = eventDate - now;\n  const timeDiffHours = timeDiffMs / (1000 * 60 * 60); \n\n  const match24hBefore = timeDiffHours === 24;\n  const match1hBefore  = timeDiffHours === 1;\n\n  if (match24hBefore || match1hBefore) {\n    matchesBefore.push({\n      json: {\n        ...event,\n        now: now.toISOString(),\n        eventDate: eventDate.toISOString(),\n        timeDiffHours,\n        matched: match24hBefore ? \"match24h\" : \"match1h\"\n      }\n    });\n  }\n\n  const timeSinceEventHours = (now - eventDate) / (1000 * 60 * 60);\n  const match24hAfter = timeSinceEventHours === 24;\n\n  if (match24hAfter) {\n    matchesAfter.push({\n      json: {\n        ...event,\n        now: now.toISOString(),\n        eventDate: eventDate.toISOString(),\n        timeSinceEventHours,\n        matched: \"after24h\"\n      }\n    });\n  }\n}\n\n\nfunction formatArabicDateTime(dateStr) {\n  const date = new Date(dateStr);\n  date.setHours(date.getHours() + 1); \n\n  const arabicMonths = [\n    \"جانفي\", \"فيفري\", \"مارس\", \"أفريل\", \"ماي\", \"جوان\",\n    \"جويلية\", \"أوت\", \"سبتمبر\", \"أكتوبر\", \"نوفمبر\", \"ديسمبر\"\n  ];\n\n  const day = String(date.getDate()).padStart(2, '0');\n  const month = arabicMonths[date.getMonth()];\n  const year = date.getFullYear();\n\n  let hours = date.getHours();\n  const minutes = String(date.getMinutes()).padStart(2, '0');\n  const isPM = hours >= 12;\n  hours = hours % 12 || 12;\n  const formattedHour = String(hours).padStart(2, '0');\n  const amPm = isPM ? \"م\" : \"ص\";\n\n  return `${day} ${month} ${year} في ${formattedHour}:${minutes} ${amPm}`;\n}\n\n\nfunction generateArabicReminders(events) {\n  const reminders = [];\n\n  for (const item of events) {\n    const e = item.json;\n    const timeText = e.matched === \"match24h\" ? \"بعد 24 ساعة\" : \"بعد ساعة\";\n    const location = \"موقعنا📍 : https://maps.app.goo.gl/XZVTYeH7dJxwg8Ek7\";\n    const arabicDateTime = formatArabicDateTime(e.start.dateTime);\n\n    const message = `${e.summary}، لديك موعد مع عيادة الدكتور رمزي ${timeText}\\n\\n  يوم ${arabicDateTime}\\n\\n${location}\\n\\nنحن في انتظارك ونتشرف بقدومك`;\n\n    reminders.push({\n      json: {\n        id: e.id,\n        summary: e.summary,\n        chatid: e.location ?? \"\",\n        reminderMessage: message,\n        eventDate: e.eventDate,\n        matched: e.matched\n      }\n    });\n  }\n\n  return reminders;\n}\n\n\nfunction generateThankYouReminders(events) {\n  const reminders = [];\n\n  for (const item of events) {\n    const e = item.json;\n    const reviewLink = \"https://shorturl.at/NW834\";\n    const message = `${e.summary}، نشكرك على زيارتك لنا في عيادة الدكتور رمزي.\\n\\nنتمنى أن تكون تجربتك ممتازة. 🌟\\n\\nإذا أعجبتك الخدمة، يسعدنا أن تترك لنا تقييمًا عبر الرابط التالي:\\n\\n${reviewLink}\\n\\nشكراً لثقتك بنا ونتطلع لرؤيتك مجددًا. 🦷😊`;\n\n    reminders.push({\n      json: {\n        id: e.id,\n        summary: e.summary,\n        chatid: e.location ?? \"\",\n        reminderMessage: message,\n        eventDate: e.eventDate,\n        matched: e.matched\n      }\n    });\n  }\n\n  return reminders;\n}\n\n\n\nconst remindersBefore = generateArabicReminders(matchesBefore);\nconst remindersAfter  = generateThankYouReminders(matchesAfter);\n\nconst allReminders = [...remindersBefore, ...remindersAfter];\n\nreturn allReminders.length > 0\n  ? allReminders\n  : [{ json: { message: \"لا توجد تذكيرات حالياً لهذه الساعات.\" } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        1960
+      ],
+      "id": "3500730e-e6a2-4e08-ac6e-fdc8ab8220ed",
+      "name": "Filter hours"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5d3efd60-321e-48a5-9371-ed125b7dc6d8",
+              "leftValue": "={{ $json.message }}",
+              "rightValue": "لا توجد تذكيرات حالياً لهذه الساعات.",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        1960
+      ],
+      "id": "8eb70be3-acaf-4ab7-8068-067eb2316cbb",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c137d8b8-706d-4a11-905d-436f08be64ce",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        860
+      ],
+      "id": "e44d8a56-e6bb-416d-bcd5-5827c92a0192",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        660,
+        260
+      ],
+      "id": "0888e9b8-c0a9-4eab-8d86-9f8c2423b76e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "lcwC3TlSYSNnhBt6",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const startRaw = $json.start.dateTime;\nconst endRaw = $json.end.dateTime;\n\nconst formattedStart = startRaw.replace('T', ' ').split('+')[0].split('.')[0];\nconst formattedEnd = endRaw.replace('T', ' ').split('+')[0].split('.')[0];\n\nreturn [\n  {\n    json: {\n      start: formattedStart,\n      end: formattedEnd,\n      summary: $json.summary,\n      description: $json.description,\n      phonenumber: $('Prepare Time').first().json.phonenumber,\n      id:$input.first().json.id\n      \n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2140,
+        800
+      ],
+      "id": "a22fe65d-18c7-443a-8036-7787b01ad510",
+      "name": "Sheet Code"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1PO6xBQVzV6qIDRni0-hsDMBMjjs3XnLHsFrkqirdIIQ",
+          "mode": "list",
+          "cachedResultName": "Appointments",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PO6xBQVzV6qIDRni0-hsDMBMjjs3XnLHsFrkqirdIIQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rCJZhhk_RUAAHZmxnCwSeFM2wjfwY4rqxdGIFSr94oQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.summary }}",
+            "Time Frame": "={{ $json.start }}",
+            "RDV status": "Confirmed",
+            "Phone": "={{ $('Prepare Time').first().json.phonenumber }}",
+            "Notes": "={{ $json.description }}",
+            "ID": "={{ $json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time Frame",
+              "displayName": "Time Frame",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RDV status",
+              "displayName": "RDV status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2360,
+        800
+      ],
+      "id": "8953c928-f9d8-4df5-9af9-81e2e82b2f2b",
+      "name": "Add to Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "MjbfL3R7z3zqf4Yk",
+          "name": "Google Sheets account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        220,
+        0
+      ],
+      "id": "7f3fca9b-226f-4439-bf6e-f7647f1e2648",
+      "name": "Audio Transcib",
+      "credentials": {
+        "openAiApi": {
+          "id": "PRbrYnoxyE1mNZ0i",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "Analyse this image and describe what in it in 2 lines \n\n",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        220,
+        200
+      ],
+      "id": "ae8d2284-a967-4f5f-9e45-9f5c9586b148",
+      "name": "Image Analysing",
+      "credentials": {
+        "openAiApi": {
+          "id": "PRbrYnoxyE1mNZ0i",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "animeweeabo0xr@gmail.com",
+          "mode": "list",
+          "cachedResultName": "animeweeabo0xr@gmail.com"
+        },
+        "eventId": "={{ $json.bookingId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1480,
+        1680
+      ],
+      "id": "548cd8d9-eb8a-411c-8973-f8e0bf501598",
+      "name": "Delete Event",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "6T0yU8tMSVF78m14",
+          "name": "Google Calendar account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "function formatCancelMessage() {\n  return {\n    json: {\n      message: \"✅ تم إلغاء الحجز بنجاح.\"\n    }\n  };\n}\n\nreturn formatCancelMessage();\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        1700
+      ],
+      "id": "b4fe3851-2c04-4341-80b4-0e698c846e14",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1PO6xBQVzV6qIDRni0-hsDMBMjjs3XnLHsFrkqirdIIQ",
+          "mode": "list",
+          "cachedResultName": "Appointments",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PO6xBQVzV6qIDRni0-hsDMBMjjs3XnLHsFrkqirdIIQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rCJZhhk_RUAAHZmxnCwSeFM2wjfwY4rqxdGIFSr94oQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "RDV status": "Cancelled",
+            "ID": "={{ $('Cancel code').item.json.bookingId }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Time Frame",
+              "displayName": "Time Frame",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "RDV status",
+              "displayName": "RDV status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1700,
+        1500
+      ],
+      "id": "8a18aedd-ea5f-4c52-ac43-6287176d25ac",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "MjbfL3R7z3zqf4Yk",
+          "name": "Google Sheets account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $('Telegram Trigger').first().json.message.text; // e.g. Telegram input\nconst allEvents = []; \n\nfor (const item of $input.all()) {\n  if (item.json && typeof item.json === 'object') {\n    allEvents.push(item.json);\n  }\n}\n\nfunction normalizeArabicNumbers(str) {\n  const arabicToEnglishMap = {\n    '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',\n    '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9',\n  };\n  return str.replace(/[٠-٩]/g, d => arabicToEnglishMap[d]);\n}\n\nconst months = {\n  'جانفي': '01', 'فيفري': '02', 'مارس': '03', 'أفريل': '04', 'ماي': '05',\n  'جوان': '06', 'جويلية': '07', 'أوت': '08', 'سبتمبر': '09',\n  'أكتوبر': '10', 'نوفمبر': '11', 'ديسمبر': '12'\n};\n\nconst normalized = normalizeArabicNumbers(input);\nconst lines = normalized.split('\\n').map(line => line.trim());\n\nconst parsed = {};\nfor (const line of lines) {\n  const [key, ...rest] = line.split(':');\n  if (key && rest.length) {\n    parsed[key.trim().toLowerCase()] = rest.join(':').trim();\n  }\n}\n\n// Required fields\nconst id = parsed['رقم الحجز'];\nconst rawStart = parsed['التوقيت الجديد'];\nconst name = parsed['الاسم'] || \"\";\nconst phone = parsed['رقم الهاتف'] || \"\";\nconst description = parsed['الوصف'] || \"\";\n\nif (!id || !rawStart) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ يجب إدخال رقم الحجز والتوقيت الجديد لتحديث الموعد.\"\n    }\n  }];\n}\n\n// Parse date\nconst dateMatch = rawStart.match(/(\\d{1,2})\\s+([^\\s]+)(?:\\s+(\\d{4}))?\\s+على\\s+(\\d{1,2})(?::(\\d{1,2}))?/);\nif (!dateMatch) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ تنسيق التوقيت غير صحيح.\"\n    }\n  }];\n}\n\nlet [, dayStr, monthName, yearStr, hourStr, minuteStr] = dateMatch;\n\nconst day = parseInt(dayStr);\nconst month = months[monthName];\nconst year = yearStr ? parseInt(yearStr) : new Date().getFullYear();\nconst hour = parseInt(hourStr);\nconst minute = minuteStr ? parseInt(minuteStr) : 0;\n\nif (!month || hour < 0 || hour > 23 || minute < 0 || minute > 59) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ خطأ في قراءة التوقيت أو الشهر.\"\n    }\n  }];\n}\n\n// Convert to UTC time\nconst newStart = new Date(Date.UTC(year, parseInt(month) - 1, day, hour - 1, minute));\nconst newEnd = new Date(newStart.getTime() + 60 * 60 * 1000);\nconst dayOfWeek = newStart.getUTCDay();\n\n// Check working hours and weekends\nif (hour < 8 || hour >= 16 || dayOfWeek === 5 ) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ الموعد الجديد خارج أوقات العمل أو في عطلة نهاية الأسبوع.\"\n    }\n  }];\n}\n\n// Look for event with the given ID\nconst eventToUpdate = allEvents.find(event => event.id === id);\n\nif (!eventToUpdate) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ لم يتم العثور على حجز بهذا الرقم.\"\n    }\n  }];\n}\n\n// Check for conflict with new time - FIXED VERSION\nconst conflict = allEvents.some(event => {\n  if (event.id === id) return false; // Skip the event being updated\n  \n  // Handle different event data structures\n  let eventStart, eventEnd;\n  \n  if (event.start && event.start.dateTime) {\n    eventStart = new Date(event.start.dateTime).getTime();\n  } else if (event.start && typeof event.start === 'string') {\n    eventStart = new Date(event.start).getTime();\n  } else {\n    return false; // Skip events without proper start time\n  }\n  \n  if (event.end && event.end.dateTime) {\n    eventEnd = new Date(event.end.dateTime).getTime();\n  } else if (event.end && typeof event.end === 'string') {\n    eventEnd = new Date(event.end).getTime();\n  } else {\n    return false; // Skip events without proper end time\n  }\n  \n  // Check for overlap\n  return (newStart.getTime() < eventEnd && newEnd.getTime() > eventStart);\n});\n\nif (conflict) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ الموعد الجديد يتعارض مع موعد آخر. يرجى اختيار وقت مختلف.\"\n    }\n  }];\n}\n\n// Update event - handle different data structures\nif (eventToUpdate.start && typeof eventToUpdate.start === 'object') {\n  eventToUpdate.start.dateTime = newStart.toISOString().replace('Z', '+00:00');\n} else {\n  eventToUpdate.start = newStart.toISOString().replace('Z', '+00:00');\n}\n\nif (eventToUpdate.end && typeof eventToUpdate.end === 'object') {\n  eventToUpdate.end.dateTime = newEnd.toISOString().replace('Z', '+00:00');\n} else {\n  eventToUpdate.end = newEnd.toISOString().replace('Z', '+00:00');\n}\n\neventToUpdate.summary = name || eventToUpdate.summary;\neventToUpdate.phonenumber = phone || eventToUpdate.phonenumber;\neventToUpdate.description = description || eventToUpdate.description;\n\nreturn [{\n  json: {\n    error: false,\n    message: `✅ تم تحديث الحجز رقم ${id} بنجاح.`,\n    updatedEvent: eventToUpdate\n  }\n}];\n\n// SECOND PART - Time availability check (also fixed)\nconst allEvents2 = [];\n\nfor (const item of $input.all()) {\n  if (item.json && typeof item.json === 'object') {\n    allEvents2.push(item.json);\n  }\n}\n\n// 2. Parse and normalize input message\nconst input2 = $('Telegram Trigger').first().json.message.text;\n\nconst normalizedText = normalizeArabicNumbers(input2);\nconst lines2 = normalizedText.split('\\n').map(line => line.trim());\nconst parsed2 = {};\n\nfor (const line of lines2) {\n  const [key, ...rest] = line.split(':');\n  if (key && rest.length) {\n    parsed2[key.trim().toLowerCase()] = rest.join(':').trim();\n  }\n}\n\n// 3. Extract date string\nconst rawStart2 = parsed2[\"التوقيت الجديد\"];\nif (!rawStart2) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ لم يتم تحديد التوقيت.\"\n    }\n  }];\n}\n\n// 5. Parse input datetime\nconst match = rawStart2.match(/(\\d{1,2})\\s+([^\\s]+)(?:\\s+(\\d{4}))?\\s+على\\s+(\\d{1,2})(?::(\\d{1,2}))?/);\nif (!match) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ تنسيق التوقيت غير صحيح. استخدم مثلًا: 13 جوان 2025 على 10 أو 13 جوان على 11:45\"\n    }\n  }];\n}\n\nlet [, dayStr2, monthName2, yearStr2, hourStr2, minuteStr2] = match;\nconst day2 = parseInt(dayStr2);\nconst month2 = months[monthName2];\nconst year2 = yearStr2 ? parseInt(yearStr2) : new Date().getFullYear();\nconst hour2 = parseInt(hourStr2);\nconst minute2 = minuteStr2 ? parseInt(minuteStr2) : 0;\n\nif (!month2 || hour2 < 0 || hour2 > 23 || minute2 < 0 || minute2 > 59) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ خطأ في قراءة التوقيت أو الشهر.\"\n    }\n  }];\n}\n\n// Convert to UTC time (Algeria is UTC+1, so subtract 1 hour)\nconst requestedDateTime = new Date(Date.UTC(year2, parseInt(month2) - 1, day2, hour2 - 1, minute2));\nconst formattedInputTime = `${year2}-${month2}-${String(day2).padStart(2, '0')} ${String(hour2).padStart(2, '0')}:${String(minute2).padStart(2, '0')}`;\n\n// 6. Prepare event intervals - FIXED VERSION\nconst eventIntervals = allEvents2\n  .filter(event => {\n    // Handle different data structures\n    if (event.start && event.end) {\n      if (event.start.dateTime && event.end.dateTime) {\n        return true;\n      } else if (typeof event.start === 'string' && typeof event.end === 'string') {\n        return true;\n      }\n    }\n    return false;\n  })\n  .map(event => ({\n    start: event.start.dateTime ? new Date(event.start.dateTime) : new Date(event.start),\n    end: event.end.dateTime ? new Date(event.end.dateTime) : new Date(event.end)\n  }));\n\n// 7. Conflict detection (overlap or within 30 min before)\nconst requestedStart = requestedDateTime.getTime();\nconst requestedEnd = requestedStart + 60 * 60 * 1000; // 1 hour duration\n\nconst isTaken = eventIntervals.some(({ start, end }) => {\n  const eventStart = start.getTime();\n  const eventEnd = end.getTime();\n  return (\n    (requestedStart < eventEnd && requestedEnd > eventStart) || // overlap\n    (requestedStart >= eventStart - 30 * 60 * 1000 && requestedStart < eventStart) // within 30 min\n  );\n});\n\n// 8. Return result\nif (isTaken) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ هذا الموعد محجوز أو قريب جدًا من موعد آخر. يرجى اختيار وقت آخر.\",\n      inputTime: formattedInputTime,\n      requested: requestedDateTime.toISOString(),\n      allEvents: eventIntervals.map(ev => ({\n        start: ev.start.toISOString(),\n        end: ev.end.toISOString()\n      }))\n    }\n  }];\n}\n\nreturn [{\n  json: {\n    error: false,\n    message: \"✅ الموعد متاح، يمكنك المتابعة.\",\n    inputTime: formattedInputTime,\n    requested: requestedDateTime.toISOString(),\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        1340
+      ],
+      "id": "da9735e3-06e9-4757-91b2-24a280d63688",
+      "name": "Update Code"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1PO6xBQVzV6qIDRni0-hsDMBMjjs3XnLHsFrkqirdIIQ",
+          "mode": "list",
+          "cachedResultName": "Appointments",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PO6xBQVzV6qIDRni0-hsDMBMjjs3XnLHsFrkqirdIIQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rCJZhhk_RUAAHZmxnCwSeFM2wjfwY4rqxdGIFSr94oQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.id }}",
+            "Name": "={{ $json.summary }}",
+            "Time Frame": "={{ $json.start }}",
+            "Phone": "={{ $json.phonenumber }}",
+            "RDV status": "Rescheduled",
+            "Notes": "={{ $json.description }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time Frame",
+              "displayName": "Time Frame",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RDV status",
+              "displayName": "RDV status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1920,
+        1100
+      ],
+      "id": "152cc5a9-0741-4aaa-9fbb-0048fa14b18f",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "MjbfL3R7z3zqf4Yk",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Collect all events\nconst allEvents = [];\n\nfor (const item of $input.all()) {\n  if (item.json && typeof item.json === 'object') {\n    allEvents.push(item.json);\n  }\n}\n\n// 2. Parse and normalize input message\nconst input = $('Telegram Trigger').first().json.message.text;\n\nfunction normalizeArabicNumbers(str) {\n  const arabicToEnglishMap = {\n    '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',\n    '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9',\n  };\n  return str.replace(/[٠-٩]/g, d => arabicToEnglishMap[d]);\n}\n\nconst normalizedText = normalizeArabicNumbers(input);\nconst lines = normalizedText.split('\\n').map(line => line.trim());\nconst parsed = {};\n\nfor (const line of lines) {\n  const [key, ...rest] = line.split(':');\n  if (key && rest.length) {\n    parsed[key.trim().toLowerCase()] = rest.join(':').trim();\n  }\n}\n\n// 3. Extract date string\nconst rawStart = parsed[\"التوقيت\"];\nif (!rawStart) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ لم يتم تحديد التوقيت.\"\n    }\n  }];\n}\n\n// 4. Define Arabic month mapping\nconst months = {\n  'جانفي': '01', 'فيفري': '02', 'مارس': '03', 'أفريل': '04', 'ماي': '05',\n  'جوان': '06', 'جويلية': '07', 'أوت': '08', 'سبتمبر': '09',\n  'أكتوبر': '10', 'نوفمبر': '11', 'ديسمبر': '12'\n};\n\n// 5. Parse input datetime\nconst match = rawStart.match(/(\\d{1,2})\\s+([^\\s]+)(?:\\s+(\\d{4}))?\\s+على\\s+(\\d{1,2})(?::(\\d{1,2}))?/);\nif (!match) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ تنسيق التوقيت غير صحيح. استخدم مثلًا: 13 جوان 2025 على 10 أو 13 جوان على 11:45\"\n    }\n  }];\n}\n\nlet [, dayStr, monthName, yearStr, hourStr, minuteStr] = match;\nconst day = parseInt(dayStr);\nconst month = months[monthName];\nconst year = yearStr ? parseInt(yearStr) : new Date().getFullYear();\nconst hour = parseInt(hourStr);\nconst minute = minuteStr ? parseInt(minuteStr) : 0;\n\nif (!month || hour < 0 || hour > 23 || minute < 0 || minute > 59) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ خطأ في قراءة التوقيت أو الشهر.\"\n    }\n  }];\n}\n\n// Convert to UTC time (Algeria is UTC+1, so subtract 1)\nconst requestedDateTime = new Date(Date.UTC(year, parseInt(month) - 1, day, hour - 1, minute));\n\n// Format for debugging\nconst formattedInputTime = `${year}-${month}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;\n\n// 6. Prepare event intervals\nconst eventIntervals = allEvents\n  .filter(event => event.start && event.end && event.start.dateTime && event.end.dateTime)\n  .map(event => ({\n    start: new Date(event.start.dateTime),\n    end: new Date(event.end.dateTime)\n  }));\n\n// 7. Conflict detection logic (conflict if within 30 mins before OR overlapping)\nconst requestedStart = requestedDateTime.getTime();\nconst requestedEnd = requestedStart + 60 * 60 * 1000; // 1 hour duration\n\nconst isTaken = eventIntervals.some(({ start, end }) => {\n  const eventStart = start.getTime();\n  const eventEnd = end.getTime();\n  return (\n    (requestedStart < eventEnd && requestedEnd > eventStart) || // overlap\n    (requestedStart >= eventStart - 30 * 60 * 1000 && requestedStart < eventStart) // within 30 min before\n  );\n});\n\n// 8. Return result based on conflict check\nif (isTaken) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ هذا الموعد محجوز أو قريب جدًا من موعد آخر. يرجى اختيار وقت آخر.\",\n      inputTime: formattedInputTime,\n      requested: requestedDateTime.toISOString(),\n      allEvents: eventIntervals.map(ev => ({\n        start: ev.start.toISOString(),\n        end: ev.end.toISOString()\n      }))\n    }\n  }];\n}\n\nreturn [{\n  json: {\n    error: false,\n    message: \"✅ الموعد متاح، يمكنك المتابعة.\",\n    inputTime: formattedInputTime,\n    requested: requestedDateTime.toISOString()\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1480,
+        900
+      ],
+      "id": "b59481fe-123a-403d-b53f-2c2aa3c1dd02",
+      "name": "Alrady exist"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "animeweeabo0xr@gmail.com",
+          "mode": "list",
+          "cachedResultName": "animeweeabo0xr@gmail.com"
+        },
+        "returnAll": true,
+        "timeMax": "={{ $now.plus({ year: 10 }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        740,
+        1640
+      ],
+      "id": "680bf519-331a-479a-ad78-8047d7ac5884",
+      "name": "Get Events For Cancel",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "6T0yU8tMSVF78m14",
+          "name": "Google Calendar account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c137d8b8-706d-4a11-905d-436f08be64ce",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1260,
+        1640
+      ],
+      "id": "62e0d61d-a37e-4dfd-8b09-82addc2ba82f",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputText = $('Telegram Trigger').first().json.message.text;\n\n\nfunction extractBookingId(text) {\n  const match = text.match(/رقم الحجز الملغى\\s*:?[\\s]*([a-zA-Z0-9\\-@_]+)/);\n  return match ? match[1] : null;\n}\n\nconst bookingId = extractBookingId(inputText);\n\nif (!bookingId) {\n  return [{\n    json: {\n      error: true,\n      message: \"❌ لم يتم العثور على رقم الحجز. الرجاء التأكد من كتابة الرقم بالشكل الصحيح.\\nمثال: رقم الحجز : 57896\"\n    }\n  }];\n}\n\n\nconst allEvents = [];\nfor (const item of $input.all()) {\n  if (item.json && typeof item.json === 'object') {\n    allEvents.push(item.json);\n  }\n}\n\n\nconst allEventIds = allEvents.map(event => event.id || null);\n\n\nconst matchingEvent = allEvents.find(event => event.id === bookingId);\n\nif (!matchingEvent) {\n  return [{\n    json: {\n      error: true,\n      message: `❌ لم يتم العثور على موعد برقم الحجز: ${bookingId}. الرجاء التحقق من الرقم.`\n    }\n  }];\n}\n\n\nreturn [{\n  json: {\n    error: false,\n    bookingId,\n    matchingEvent,\n    message: `✅ تم العثور على موعد برقم الحجز: ${bookingId}. جاهز للإجراء.`\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        1640
+      ],
+      "id": "e3cb9e68-c4a2-435a-a562-46f955590820",
+      "name": "Cancel code"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "animeweeabo0xr@gmail.com",
+          "mode": "list",
+          "cachedResultName": "animeweeabo0xr@gmail.com"
+        },
+        "returnAll": true,
+        "timeMax": "={{ $now.plus({ year: 10 }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1260,
+        900
+      ],
+      "id": "5f8cba05-1fde-4b6d-960f-de4f240c247f",
+      "name": "Get Events For Create",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "6T0yU8tMSVF78m14",
+          "name": "Google Calendar account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "animeweeabo0xr@gmail.com",
+          "mode": "list",
+          "cachedResultName": "animeweeabo0xr@gmail.com"
+        },
+        "returnAll": true,
+        "timeMax": "={{ $now.plus({ year: 10 }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        740,
+        1340
+      ],
+      "id": "41b06c36-b46a-4cdf-91c8-9486bdfab8ae",
+      "name": "Get Events For Update",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "6T0yU8tMSVF78m14",
+          "name": "Google Calendar account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c137d8b8-706d-4a11-905d-436f08be64ce",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1700,
+        900
+      ],
+      "id": "a4424164-81d7-4582-9c25-0d4ea9d1f986",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c137d8b8-706d-4a11-905d-436f08be64ce",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1260,
+        1340
+      ],
+      "id": "ef2a76af-ed16-47fe-a26b-d1bea13f05a3",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "jsCode": "const startRaw = $json.start.dateTime;\nconst endRaw = $json.end.dateTime;\n\nconst formattedStart = startRaw.replace('T', ' ').split('+')[0].split('.')[0];\nconst formattedEnd = endRaw.replace('T', ' ').split('+')[0].split('.')[0];\n\nreturn [\n  {\n    json: {\n      start: formattedStart,\n      end: formattedEnd,\n      summary:$input.first().json.summary,\n      description: $input.first().json.description,\n      phonenumber: $input.first().json.location,\n      id:$input.first().json.id\n      \n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        1100
+      ],
+      "id": "ccac5bbb-8b5d-44ec-b713-070a0051c10b",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "animeweeabo0xr@gmail.com",
+          "mode": "list",
+          "cachedResultName": "animeweeabo0xr@gmail.com"
+        },
+        "eventId": "={{ $json.updatedEvent.id }}",
+        "updateFields": {
+          "description": "={{ $json.updatedEvent.description }}",
+          "end": "={{ $json.updatedEvent.end.dateTime }}",
+          "location": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+          "start": "={{ $json.updatedEvent.start.dateTime }}",
+          "summary": "={{ $json.updatedEvent.summary }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1480,
+        1280
+      ],
+      "id": "a07dc316-9e0a-4921-9339-0bcaea0f6f49",
+      "name": "Update An Event",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "6T0yU8tMSVF78m14",
+          "name": "Google Calendar account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "function formatUpdateMessage() {\n  return {\n    json: {\n      message: \"✅ تم تحديث الحجز بنجاح.\"\n    }\n  };\n}\n\nreturn formatUpdateMessage();\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        1300
+      ],
+      "id": "87b52fcf-d50e-492d-868e-b3be613faa91",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.from.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        780,
+        260
+      ],
+      "id": "2684814d-ac86-42fb-819a-3fcc9fdb2101",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -440,
+        160
+      ],
+      "id": "9f2e82a2-c8bd-4e9f-be0a-e564314f7d1d",
+      "name": "Telegram Trigger",
+      "webhookId": "d23f7e47-a730-4a0e-92a3-90365f8ffe85",
+      "credentials": {
+        "telegramApi": {
+          "id": "exVHGPCatW7qLT8w",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1040,
+        160
+      ],
+      "id": "59fb3ac1-20ce-4861-86eb-ff2b18803a68",
+      "name": "Send Ai Message",
+      "webhookId": "6474fd3b-1758-457e-9035-ecf3d87dda9e",
+      "credentials": {
+        "telegramApi": {
+          "id": "exVHGPCatW7qLT8w",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.from.id }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1260,
+        460
+      ],
+      "id": "c946b9e5-3951-474b-bc2a-4a41cc988593",
+      "name": "Send Available",
+      "webhookId": "7e7f05c3-d0a1-44eb-9049-d2b34ef0b78e",
+      "credentials": {
+        "telegramApi": {
+          "id": "exVHGPCatW7qLT8w",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.from.id }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1920,
+        700
+      ],
+      "id": "fdf6f29f-75f8-4aaf-92bc-9135df16bd1d",
+      "name": "Send Eroor create",
+      "webhookId": "295fdecd-8994-4baa-9343-450c87267543",
+      "credentials": {
+        "telegramApi": {
+          "id": "exVHGPCatW7qLT8w",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1480,
+        1480
+      ],
+      "id": "67dd0f87-61c1-4ed9-960f-f57401765305",
+      "name": "Telegram1",
+      "webhookId": "0edbb701-7a1b-4a72-98a9-e15cd5d8a4a2",
+      "credentials": {
+        "telegramApi": {
+          "id": "exVHGPCatW7qLT8w",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1920,
+        1580
+      ],
+      "id": "57d64260-ebbf-4e99-b550-139b50d59645",
+      "name": "Send Cnacel Update",
+      "webhookId": "c1c4ec21-dcbf-4954-8287-90d8df50e525",
+      "credentials": {
+        "telegramApi": {
+          "id": "exVHGPCatW7qLT8w",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2360,
+        1000
+      ],
+      "id": "d644fb6b-b2b4-4fd1-bf8c-f68c42da9356",
+      "name": "Send Create1",
+      "webhookId": "c1c4ec21-dcbf-4954-8287-90d8df50e525",
+      "credentials": {
+        "telegramApi": {
+          "id": "exVHGPCatW7qLT8w",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Filter hours').item.json.chatid }}",
+        "text": "={{ $json.reminderMessage }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        440,
+        1960
+      ],
+      "id": "eb13e7b1-029c-48ba-a9f3-6e21c86d481c",
+      "name": "Send Reminder",
+      "webhookId": "56f8de99-e052-4834-a0b6-04209483e522",
+      "credentials": {
+        "telegramApi": {
+          "id": "exVHGPCatW7qLT8w",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0263ef8f-e7e2-40a7-8c11-107b877f7cec",
+      "name": "Download Audio",
+      "webhookId": "01e02847-eae0-4d02-82ce-3c9296d797a5",
+      "credentials": {
+        "telegramApi": {
+          "id": "exVHGPCatW7qLT8w",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.photo[0].file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        200
+      ],
+      "id": "839da0af-b1cd-4600-9e82-e23e3d12131f",
+      "name": "Download Image",
+      "webhookId": "01e02847-eae0-4d02-82ce-3c9296d797a5",
+      "credentials": {
+        "telegramApi": {
+          "id": "exVHGPCatW7qLT8w",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Download Audio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Download Image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Text Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send Ai Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "service type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Event": {
+      "main": [
+        [
+          {
+            "node": "Format Message When Event Created",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Sheet Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Group Events by Day": {
+      "main": [
+        [
+          {
+            "node": "Send Available",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get All Events": {
+      "main": [
+        [
+          {
+            "node": "Group Events by Day",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Time": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "service type": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get All Events",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Time",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Events For Update",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Events For Cancel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Prompt": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio Prompt": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Prompt": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Message When Event Created": {
+      "main": [
+        [
+          {
+            "node": "Send Create1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get All Events for For reminders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get All Events for For reminders": {
+      "main": [
+        [
+          {
+            "node": "Filter hours",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter hours": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send Reminder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Send Eroor create",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Events For Create",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sheet Code": {
+      "main": [
+        [
+          {
+            "node": "Add to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio Transcib": {
+      "main": [
+        [
+          {
+            "node": "Audio Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Analysing": {
+      "main": [
+        [
+          {
+            "node": "Image Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Event": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Send Cnacel Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Code": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Events For Cancel": {
+      "main": [
+        [
+          {
+            "node": "Cancel code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Delete Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cancel code": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alrady exist": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Events For Create": {
+      "main": [
+        [
+          {
+            "node": "Alrady exist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Events For Update": {
+      "main": [
+        [
+          {
+            "node": "Update Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Send Eroor create",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update An Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update An Event": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Send Cnacel Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Audio": {
+      "main": [
+        [
+          {
+            "node": "Audio Transcib",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "Image Analysing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "efd53cef-7ace-45e8-9a16-df55751d2284",
+  "meta": {
+    "instanceId": "8141d6e46ae07ef38290c3fb1e10dc5cfd49f176c521dff8a9f41a52a9128251"
+  },
+  "id": "UlHKPmFgVe9pTYSY",
+  "tags": []
+}
