@@ -1,0 +1,161 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "multipleMethods": true,
+        "path": "8a259b4f-3c32-49c4-80c8-b3c17950cf98",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1160,
+        0
+      ],
+      "id": "6df6bdd1-9953-45a6-91ef-8ceeae49528a",
+      "name": "Webhook",
+      "webhookId": "8a259b4f-3c32-49c4-80c8-b3c17950cf98"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.query['hub.challenge'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -700,
+        -200
+      ],
+      "id": "c91b0a7b-b26e-4bbb-b58b-d10849b43a4c",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "respond to this meesage you are helpful assistant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -940,
+        100
+      ],
+      "id": "7c0f508c-7421-484b-9f6d-3468c6d4842f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -920,
+        320
+      ],
+      "id": "daf879f9-5b4e-458a-bff4-b10b43788619",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "oQx2t3MDUkjgZKYb",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v21.0/me/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{\n{\n\"recipient\": { \"id\": \"1010652471150020\" },\n\"message\": { \"text\": $json.message }\n}\n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -580,
+        100
+      ],
+      "id": "7abf1a2d-5a6c-4046-979f-43a22d38fa3b",
+      "name": "Send messenger response",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "7BGpWMNny7zL0eEu",
+          "name": "Header Auth account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send messenger response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "98ef2414-df56-4315-928e-0abea3f147ab",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad838512b4c3ebe20380863dbc04478cc053a033e5aa744801385fbcdc905e3c"
+  },
+  "id": "kq5fuiDeZbaN3Wyp",
+  "tags": []
+}
