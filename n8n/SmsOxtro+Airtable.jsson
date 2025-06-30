@@ -1,0 +1,257 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1CHY11z3dQHB9zAFe2fd6_3b2WEtOd-0GN02x34SRauI",
+          "mode": "list",
+          "cachedResultName": "تسجيل تلميذ لحفظ القرآن (Responses)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CHY11z3dQHB9zAFe2fd6_3b2WEtOd-0GN02x34SRauI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 501855722,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CHY11z3dQHB9zAFe2fd6_3b2WEtOd-0GN02x34SRauI/edit#gid=501855722"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -580,
+        0
+      ],
+      "id": "fa632f0c-ee54-4839-9ef1-229d186d1852",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "14XgC1MofuOKow1l",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "apppfPhHRy81cmGKA",
+          "mode": "list",
+          "cachedResultName": "Quran Base",
+          "cachedResultUrl": "https://airtable.com/apppfPhHRy81cmGKA"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl2IUeZZ5IrH02pr",
+          "mode": "list",
+          "cachedResultName": "Students",
+          "cachedResultUrl": "https://airtable.com/apppfPhHRy81cmGKA/tbl2IUeZZ5IrH02pr"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Full Name": "={{ $json['اسم التلميذ'] }}",
+            "Parent Phone": "={{ $json['رقم هاتف الولي'].toString() }}",
+            "Status": "={{ $json['المستوى'] }}",
+            "Join Date\t": "={{ $now }}\n"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Parent Phone",
+              "displayName": "Parent Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Join Date\t",
+              "displayName": "Join Date\t",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "مبتدئ",
+                  "value": "مبتدئ"
+                },
+                {
+                  "name": "متوسط",
+                  "value": "متوسط"
+                },
+                {
+                  "name": "متقدم",
+                  "value": "متقدم"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Telegram id",
+              "displayName": "Telegram id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -360,
+        0
+      ],
+      "id": "bf6cdd30-cbc5-48a0-b0ed-bde63518eca1",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "DH73ihiXJVq3BX9w",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://app.getoxtro.com/api/send/sms",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "secret",
+              "value": "f920befbd83b98392df05264a5683434cb400644"
+            },
+            {
+              "name": "mode",
+              "value": "devices"
+            },
+            {
+              "name": "device",
+              "value": "b9b2c9e0-4cd9-b2ed-8661-310452233328"
+            },
+            {
+              "name": "phone",
+              "value": "+213656284020"
+            },
+            {
+              "name": "message",
+              "value": "im moncef zabat what about you"
+            },
+            {
+              "name": "sim",
+              "value": "2"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -140,
+        0
+      ],
+      "id": "3ee86e15-1fa8-4f96-9d6b-068724eccc3c",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f36552cc-a07f-4950-be97-8d810c218219",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad838512b4c3ebe20380863dbc04478cc053a033e5aa744801385fbcdc905e3c"
+  },
+  "id": "EJAh9PgVm9lToS9d",
+  "tags": []
+}
